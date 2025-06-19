@@ -6,10 +6,10 @@ import bcrypt from "bcrypt";
 
 export const authConfig = {
   providers: [
-    CredentialsProvider({
+    CredentialsProvider({ // we have it from next-auth lib
       async authorize(credentials) {
         await connectToDB();
-        const user = await User.findOne({ username: credentials.username });
+        const user = await User.findOne({ username: credentials.username }); // to find only one user from the db 
         if (!user) return null;
 
         const isValid = await bcrypt.compare(credentials.password, user.password);
@@ -24,12 +24,13 @@ export const authConfig = {
     }),
   ],
   pages: {
-    signIn: "/login",
-  },
-  callbacks: {
-    async session({ session, token }) {
-      session.user.id = token.sub;
+    signIn: "/login", // pages that are used for authentication
+  }, 
+  callbacks: { //call are functions that are called during the auth process 
+    async session({ session, token }) { //when a session is created or updated 
+      session.user.id = token.sub; // sub is subject in token and token from the info during sign in  ,, add id to data 
       return session;
     },
   },
 };
+

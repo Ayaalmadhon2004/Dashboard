@@ -3,6 +3,7 @@
 import { signIn } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import styles from "../ui/login/login.module.css"; 
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
@@ -18,7 +19,7 @@ export default function LoginPage() {
     }
 
     const res = await signIn("credentials", {
-      redirect: false,
+      redirect: false, // we use it to prevent automatic redirect 
       username,
       password,
     });
@@ -31,9 +32,9 @@ export default function LoginPage() {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className={styles.container}>
+      <form className={styles.form} onSubmit={handleLogin}>
+        <h2>Login</h2>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
