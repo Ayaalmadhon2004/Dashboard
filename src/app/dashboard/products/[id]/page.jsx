@@ -1,44 +1,57 @@
 import Image from "next/image";
 import style from "../../../ui/dashboard/products/singleProduct/singleproduct.module.css";
+import { fetchProduct } from "../../../lib/data";
+import { updateProduct } from "../../../lib/actions";
 
-export default function SingleUserPage() {
+export default async function SingleUserPage({ params }) {
+  const { id } = params;
+  const product = await fetchProduct(id);
+
   return (
     <div className={style.container}>
-        <div className={style.infoContainer}>
-            <div className={style.imgContainer}>
-                <Image src="/assets/personal.jpg" alt="" fill/>
-            </div>
-            John Doe
+      <div className={style.infoContainer}>
+        <div className={style.imgContainer}>
+          <Image src="/assets/personal.jpg" alt="Product Image" fill />
         </div>
-        <div className={style.formContainer}>
-        < div className={style.form}>
-            <label>Username</label>
-            <input type="text" name="username" placeholder="John Doe"/>
-            <label>Email</label>
-            <input type="email" name="email" placeholder="John.123@gmail.com"/>
-            <label>Password</label>
-            <input type="password" name="password" placeholder="John Doe"/>
-            <label>phone</label>
-            <input type="phone" name="phone" placeholder="1232312354"/>
-            <label>Address</label>
-            <input type="text" name="address" placeholder="New York City"/>
+        <p>{product.username}</p>
+      </div>
 
-            <label>Is Admin?</label>
-            <select name="isAdmin" id="isAdmin">
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-            </select>
+      <div className={style.formContainer}>
+        <form action={updateProduct} className={style.form}>
+          <label>Username</label>
+          <input type="text" name="username" placeholder={product.username} />
 
+          <label>Email</label>
+          <input type="email" name="email" placeholder={product.email} />
 
-            <label>Is Active?</label>
-            <select name="isActive" id="isActive">
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
-            </select>
+          <label>Password</label>
+          <input type="password" name="password" placeholder="Password" />
 
-            <button>Update</button>
-         </div>
-        </div>
+          <label>Phone</label>
+          <input type="tel" name="phone" placeholder={product.phone} />
+
+          <label>Address</label>
+          <input
+            type="text"
+            name="address"
+            placeholder={`New ${product.address}`}
+          />
+
+          <label>Is Admin?</label>
+          <select name="isAdmin" id="isAdmin" defaultValue={product.isAdmin}>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
+          </select>
+
+          <label>Is Active?</label>
+          <select name="isActive" id="isActive" defaultValue={product.isActive}>
+            <option value={true}>Yes</option>
+            <option value={false}>No</option>
+          </select>
+
+          <button type="submit">Update</button>
+        </form>
+      </div>
     </div>
-  )
+  );
 }

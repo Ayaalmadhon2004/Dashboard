@@ -1,10 +1,11 @@
 import Image from "next/image";
 import style from "../../../ui/dashboard/users/singleUser/singleuser.module.css";
 import { fetchUser } from "../../../lib/data";
+import { updateUser } from "../../../lib/actions";
 
-export default async function SingleUserPage({params}) {
-    const users = await fetchUsers();
-    console.log(users);
+export default async function SingleUserPage({params}) { // params come from dynamic section , so when i wrote ${user.id} he knows that he will go to [id] section by default
+    //const users = await fetchUser();
+    //console.log(users);
 
     const {id} =params;
     const user=await fetchUser(id);
@@ -18,8 +19,8 @@ export default async function SingleUserPage({params}) {
             {user.username}
         </div>
         <div className={style.formContainer}>
-        < div className={style.form}>
-        <input type="hidden" name="id" value={user.id}/>
+        <form action={updateUser} className={style.form}>
+            <input type="hidden" name="id" value={user.id}/>
             <label>Username</label>
             <input type="text" name="username" placeholder={user.username}/>
             <label>Email</label>
@@ -33,20 +34,20 @@ export default async function SingleUserPage({params}) {
 
             <label>Is Admin?</label>
             <select name="isAdmin" id="isAdmin">
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value={true} selected={user.isAdmin}>Yes</option>
+                <option value={false} selected={!user.isAdmin}>No</option>
             </select>
 
 
             <label>Is Active?</label>
             <select name="isActive" id="isActive">
-                <option value={true}>Yes</option>
-                <option value={false}>No</option>
+                <option value={true} selected={user.isAdmin}>Yes</option>
+                <option value={false} selected={!user.isAdmin}>No</option>
             </select>
 
             <button>Update</button>
+            </form>
          </div>
-        </div>
     </div>
   )
 }

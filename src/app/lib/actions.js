@@ -82,10 +82,10 @@ export const deleteUser = async (formData) => {
   const { id } = Object.fromEntries(formData);
 
   try {
-    await connectToDB(); // ✅ تأكد من await
+    await connectToDB(); // تأكد من await
     await User.findByIdAndDelete(id);
   } catch (err) {
-    console.log("❌ خطأ أثناء حذف المستخدم:", err);
+    console.log(" خطأ أثناء حذف المستخدم:", err);
     throw new Error("Failed to delete user"); // ✅ نص الخطأ الصحيح
   }
 
@@ -100,7 +100,7 @@ export const deleteProduct = async (formData) => {
     await connectToDB();
     await Product.findByIdAndDelete(id);
   } catch (err) {
-    console.log("❌ خطأ أثناء حذف المنتج:", err);
+    console.log(" خطأ أثناء حذف المنتج:", err);
     throw new Error("Failed to delete product");
   }
 
@@ -111,6 +111,57 @@ export const deleteProduct = async (formData) => {
 
 
 export const updateUser = async (formData) => {
+  const {
+    id,
+    username,
+    email,
+    password,
+    phone,
+    address,
+    isAdmin,
+    isActive,
+  } = Object.fromEntries(formData);
+
+  try {
+    await connectToDB();
+
+    // إنشاء كائن يحتوي على القيم التي نريد تحديثها
+    const updateFields = {
+      username,
+      email,
+      password,
+      phone,
+      address,
+      isAdmin,
+      isActive,
+    };
+
+    // حذف الحقول الفارغة أو undefined من التحديث
+    Object.keys(updateFields).forEach(
+      (key) =>
+        (updateFields[key] === "" || updateFields[key] === undefined) && // if there is no data , or undefined data , it will delete it 
+        delete updateFields[key]
+    );
+
+    // إذا كان هناك كلمة مرور، نقوم بتشفيرها
+    if (updateFields.password) {
+      const salt = await bcrypt.genSalt(10);
+      updateFields.password = await bcrypt.hash(updateFields.password, salt);
+    }
+
+    // تحديث المستخدم
+    await User.findByIdAndUpdate(id, updateFields);
+
+  } catch (err) {
+    console.log(" خطأ أثناء تحديث المستخدم:", err);
+    throw new Error("Failed to update user");
+  }
+
+  revalidatePath("/dashboard/users");
+  redirect("/dashboard/users");
+};
+
+export const updateProduct = async (formData) => {
   const {
     id,
     username,
@@ -153,12 +204,13 @@ export const updateUser = async (formData) => {
     await User.findByIdAndUpdate(id, updateFields);
 
   } catch (err) {
-    console.log("❌ خطأ أثناء تحديث المستخدم:", err);
+    console.log(" خطأ أثناء تحديث المستخدم:", err);
     throw new Error("Failed to update user");
   }
 
-  revalidatePath("/dashboard/users");
-  redirect("/dashboard/users");
+  revalidatePath("/dashboard/products");
+  redirect("/dashboard/products");
 };
+
 
 
