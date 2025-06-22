@@ -13,9 +13,6 @@ export default async function SingleUserPage({params}) { // params come from dyn
   return (
     <div className={style.container}>
         <div className={style.infoContainer}>
-            <div className={style.imgContainer}>
-                <Image src="/assets/personal.jpg" alt="" fill/>
-            </div>
             {user.username}
         </div>
         <div className={style.formContainer}>

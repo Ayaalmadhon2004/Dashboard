@@ -18,7 +18,6 @@ export default function rightbar() {
             <MdPlayCircleFilled/>
             Watch
           </button>
-          //image ai 
         </div>
       </div>
     </div>

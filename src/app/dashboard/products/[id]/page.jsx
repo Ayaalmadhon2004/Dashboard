@@ -10,9 +10,6 @@ export default async function SingleUserPage({ params }) {
   return (
     <div className={style.container}>
       <div className={style.infoContainer}>
-        <div className={style.imgContainer}>
-          <Image src="/assets/personal.jpg" alt="Product Image" fill />
-        </div>
         <p>{product.username}</p>
       </div>
 

@@ -40,7 +40,6 @@ export default async function Users({searchParams}) { // we have searchParams fr
     <tr key={user._id}>
       <td>
         <div className={style.user}>
-          <Image src="/personal.jpg" alt={user.username} width={40} height={40} />
           {user.username}
         </div>
       </td>
@@ -48,7 +47,7 @@ export default async function Users({searchParams}) { // we have searchParams fr
       <td>غير متوفر</td>
       <td>{user.isAdmin ? "Admin" : "User"}</td>
       <td>{user.isActive ? "Active" : "Inactive"}</td>
-      <td>
+      <td className={style.btns}>
         <Link href={`/dashboard/users/${user._id}`}>
           <button className={`${style.button} ${style.view}`}>View</button>
         </Link>

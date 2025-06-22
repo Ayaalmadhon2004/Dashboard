@@ -59,3 +59,9 @@
 .delete{
     background-color: crimson;
 }
+
+.btns{
+    display:flex;
+    align-items: center;
+    gap:20px;
+}

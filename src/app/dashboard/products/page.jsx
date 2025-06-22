@@ -36,12 +36,6 @@ export default async function products({ searchParams }) {
             <tr key={product._id}>
               <td>
                 <div className={style.user}>
-                  <Image
-                    src={product.img || "/user-placeholder.jpg"}
-                    alt={product.username}
-                    width={40}
-                    height={40}
-                  />
                   {product.username}
                 </div>
               </td>
@@ -49,7 +43,7 @@ export default async function products({ searchParams }) {
               <td>{product.phone || "N/A"}</td>
               <td>{product.address || "N/A"}</td>
               <td>{product.isActive ? "Active" : "Inactive"}</td>
-              <td>
+              <td className={style.btns}>
                 <Link href={`/dashboard/users/${product._id}`}>
                   <button className={`${style.button} ${style.view}`}>View</button>
                 </Link>
